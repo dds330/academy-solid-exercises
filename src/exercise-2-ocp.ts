@@ -12,26 +12,39 @@
 // =============================================================
 
 // ---- PROBLEM CODE (do not delete — understand it first) -----
+interface DiscountStrategy {
+  calculate(price: number): number;
+}
 
-class DiscountCalculator {
-  calculate(customerType: string, price: number): number {
-    if (customerType === "student") {
-      return price * 0.8; // 20% off
-    }
-
-    if (customerType === "employee") {
-      return price * 0.7; // 30% off
-    }
-
-    if (customerType === "vip") {
-      return price * 0.5; // 50% off
-    }
-
-    return price; // no discount
+class StudentDiscount implements DiscountStrategy {
+  calculate(price: number): number {
+    return price * 0.8; // 20% off
   }
 }
 
-const calc = new DiscountCalculator();
-console.log("Student price:  ", calc.calculate("student", 100)); // 80
-console.log("VIP price:      ", calc.calculate("vip", 100)); // 50
-console.log("Standard price: ", calc.calculate("standard", 100)); // 100
+class EmployeeDiscount implements DiscountStrategy {
+  calculate(price: number): number {
+    return price * 0.7; // 30% off
+  }
+}
+
+class VIPDiscount implements DiscountStrategy {
+  calculate(price: number): number {
+    return price * 0.5; // 50% off
+  }
+}
+class DiscountCalculator {
+  constructor(private discountStrategy: DiscountStrategy) {}
+  calculate(price: number): number {
+    return this.discountStrategy.calculate(price);
+  }
+}
+
+const studentDiscount = new StudentDiscount();
+const employeeDiscount = new EmployeeDiscount();
+const vipDiscount = new VIPDiscount();
+
+
+console.log("Student price:  ", studentDiscount.calculate(100)); // 80
+console.log("Employee price: ", employeeDiscount.calculate(100)); // 70
+console.log("VIP price:      ", vipDiscount.calculate(100)); // 50
