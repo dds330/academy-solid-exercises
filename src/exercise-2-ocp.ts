@@ -33,6 +33,12 @@ class VIPDiscount implements DiscountStrategy {
     return price * 0.5; // 50% off
   }
 }
+
+class NoDiscount implements DiscountStrategy {
+  calculate(price: number): number {
+    return price; // no discount
+  }
+}
 class DiscountCalculator {
   constructor(private discountStrategy: DiscountStrategy) {}
   calculate(price: number): number {
@@ -40,11 +46,12 @@ class DiscountCalculator {
   }
 }
 
+
 const studentDiscount = new StudentDiscount();
 const employeeDiscount = new EmployeeDiscount();
 const vipDiscount = new VIPDiscount();
 
 
 console.log("Student price:  ", studentDiscount.calculate(100)); // 80
-console.log("Employee price: ", employeeDiscount.calculate(100)); // 70
 console.log("VIP price:      ", vipDiscount.calculate(100)); // 50
+console.log("Standard price: ", new NoDiscount().calculate(100)); // 100
